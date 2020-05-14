@@ -1,6 +1,6 @@
 // Controller to keep track of income, expenses and the budget.
 var budgetController = (function () {
-    // Code for budgetController.
+
     var Income = function (id, description, value) {
         this.id = id;
         this.description = description;
@@ -49,8 +49,10 @@ var budgetController = (function () {
     }
 })();
 
+
+// Controller for the UI and contents.
 var UIController = (function () {
-    // Code for UI controller.
+
     var DOM = {
         type: '.add__type',
         description: '.add__description',
@@ -72,6 +74,7 @@ var UIController = (function () {
         },
         getDOMElements: DOM,
         addListItem: function (obj, type) {
+
             // create the html string.
             var html, element;
             if (type === 'inc') {
@@ -114,11 +117,12 @@ var UIController = (function () {
     }
 })();
 
+
+// Code connecting the budget and UI controllers. Takes the objects returned by them as arguments.
+// Renaming arguments of this function to something else so that its more independent.
+// If budget and UI controllers were renamed, only need to change once at the bottom, everything else
+// would still be called budgetCtrl and UICtrl.
 var controller = (function (budgetCtrl, UICtrl) {
-    // Code connecting the budget and UI controllers. Takes the objects returned by them as arguments.
-    // Renaming arguments of this function to something else so that its more independent.
-    // If budget and UI controllers were renamed, only need to change once at the bottom, everything else
-    // would still be called budgetCtrl and UICtrl.
 
     function setupEventListeners() {
         var DOM = UICtrl.getDOMElements;
