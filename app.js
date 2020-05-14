@@ -13,6 +13,14 @@ var budgetController = (function () {
         this.value = value;
     }
 
+    var calculateTotal = function (type) {
+        var sum = 0;
+        data.items[type].forEach(function (curr) {
+            sum += curr.value;
+        });
+        data.totals[type] = sum;
+    }
+
     // Data structure.
     var data = {
         items: {
@@ -23,7 +31,9 @@ var budgetController = (function () {
         totals: {
             inc: 0,
             exp: 0
-        }
+        },
+        budget: 0,
+        percentage: -1
     }
 
 
@@ -43,6 +53,27 @@ var budgetController = (function () {
 
             return newItem;
         },
+        calculateBudget: function () {
+            // calculate total for expense and income.
+            calculateTotal('inc');
+            calculateTotal('exp');
+
+            // calculate the budget = income - expense.
+            data.budget = data.totals.inc - data.totals.exp;
+
+            // calculate percentage
+            data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+        },
+
+        getBudget: function () {
+            return {
+                budget: data.budget,
+                totalInc: data.totals.inc,
+                totalExp: data.totals.exp,
+                percentage: data.percentage
+            };
+        },
+
         temp: function () {
             return data;
         }
@@ -135,6 +166,17 @@ var controller = (function (budgetCtrl, UICtrl) {
         });
     };
 
+    function updateBudget() {
+        // calculate budget.
+        budgetController.calculateBudget();
+
+        // return the budget.
+        var budget = budgetController.getBudget();
+
+        // update the UI.
+        console.log(budget);
+    }
+
     // Controls the adding of items to other modules.
     function ctrlAddItem() {
         // get item from the UI.
@@ -150,9 +192,8 @@ var controller = (function (budgetCtrl, UICtrl) {
             // clear the fields.
             UICtrl.clear();
 
-            // calculate budget.
-
-            // display budget.
+            // update the budget.
+            updateBudget();
 
             // Returning an object.
         }
