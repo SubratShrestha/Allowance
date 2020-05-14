@@ -69,7 +69,7 @@ var UIController = (function () {
             return {
                 type: document.querySelector(DOM.type).value, // returns inc or exp.
                 desc: document.querySelector(DOM.description).value,
-                val: document.querySelector(DOM.value).value
+                val: parseFloat(document.querySelector(DOM.value).value)
             };
         },
         getDOMElements: DOM,
@@ -140,20 +140,23 @@ var controller = (function (budgetCtrl, UICtrl) {
         // get item from the UI.
         var input = UICtrl.getInput();
 
-        // add item to budget controller.
-        var newItem = budgetCtrl.addItem(input.type, input.desc, input.val);
+        if (input.desc !== '' && !isNaN(input.val) && input.val > 0) {
+            // add item to budget controller.
+            var newItem = budgetCtrl.addItem(input.type, input.desc, input.val);
 
-        // add item to UI.
-        UICtrl.addListItem(newItem, input.type);
+            // add item to UI.
+            UICtrl.addListItem(newItem, input.type);
 
-        // clear the fields.
-        UICtrl.clear();
+            // clear the fields.
+            UICtrl.clear();
 
-        // calculate budget.
+            // calculate budget.
 
-        // display budget.
+            // display budget.
 
-        // Returning an object.
+            // Returning an object.
+        }
+
     };
 
 
