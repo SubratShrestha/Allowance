@@ -92,7 +92,11 @@ var UIController = (function () {
         value: '.add__value',
         addButton: '.add__btn',
         incomeList: '.income__list',
-        expenseList: '.expenses__list'
+        expenseList: '.expenses__list',
+        budgetLabel: '.budget__value',
+        incomeLabel: '.budget__income--value',
+        expenseLabel: '.budget__expenses--value',
+        percentageLabel: '.budget__expenses--percentage'
     };
 
     // Returning an object.
@@ -146,6 +150,16 @@ var UIController = (function () {
             });
 
             fields[0].focus();
+        },
+
+        updateUI: function (budgetObj) {
+            document.querySelector(DOM.budgetLabel).textContent = '$' + budgetObj.budget;
+            document.querySelector(DOM.incomeLabel).textContent = budgetObj.totalInc;
+            document.querySelector(DOM.expenseLabel).textContent = budgetObj.totalExp;
+
+            if (budgetObj.percentage > 0)
+                document.querySelector(DOM.percentageLabel).textContent = budgetObj.percentage + '%';
+            else document.querySelector(DOM.percentageLabel).textContent = '...'
         }
     }
 })();
@@ -176,7 +190,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         var budget = budgetController.getBudget();
 
         // update the UI.
-        console.log(budget);
+        UICtrl.updateUI(budget);
     }
 
     // Controls the adding of items to other modules.
