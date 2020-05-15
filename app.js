@@ -154,8 +154,8 @@ var UIController = (function () {
 
         updateUI: function (budgetObj) {
             document.querySelector(DOM.budgetLabel).textContent = '$' + budgetObj.budget;
-            document.querySelector(DOM.incomeLabel).textContent = budgetObj.totalInc;
-            document.querySelector(DOM.expenseLabel).textContent = budgetObj.totalExp;
+            document.querySelector(DOM.incomeLabel).textContent = '+ ' + budgetObj.totalInc;
+            document.querySelector(DOM.expenseLabel).textContent = '- ' + budgetObj.totalExp;
 
             if (budgetObj.percentage > 0)
                 document.querySelector(DOM.percentageLabel).textContent = budgetObj.percentage + '%';
