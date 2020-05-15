@@ -42,7 +42,7 @@ var budgetController = (function () {
         // All variables and methods that we want accessible later.
         addItem: function (type, desc, value) {
             if (data.items[type].length > 0)
-                var ID = data.items[type][data.items[type].length - 1] + 1;
+                var ID = data.items[type][data.items[type].length - 1].id + 1;
             else var ID = 0;
 
             if (type === 'inc')
@@ -96,7 +96,8 @@ var UIController = (function () {
         budgetLabel: '.budget__value',
         incomeLabel: '.budget__income--value',
         expenseLabel: '.budget__expenses--value',
-        percentageLabel: '.budget__expenses--percentage'
+        percentageLabel: '.budget__expenses--percentage',
+        container: '.container'
     };
 
     // Returning an object.
@@ -116,7 +117,7 @@ var UIController = (function () {
             var html, element;
             if (type === 'inc') {
                 element = DOM.incomeList;
-                html = `<div class="item clearfix" id="income-${obj.id}">
+                html = `<div class="item clearfix" id="inc-${obj.id}">
                             <div class="item__description">${obj.description}</div>
                             <div class="right clearfix">
                                 <div class="item__value">${obj.value}</div>
@@ -127,7 +128,7 @@ var UIController = (function () {
                         </div>`;
             } else {
                 element = DOM.expenseList;
-                html = ` <div class="item clearfix" id="expense-${obj.id}">
+                html = ` <div class="item clearfix" id="exp-${obj.id}">
                             <div class="item__description">${obj.description}</div>
                             <div class="right clearfix">
                                 <div class="item__value">${obj.value}</div>
@@ -180,6 +181,8 @@ var controller = (function (budgetCtrl, UICtrl) {
             if (event.keyCode === 13 || event.which === 13)
                 ctrlAddItem();
         });
+
+        document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem);
     };
 
     function updateBudget() {
@@ -213,8 +216,24 @@ var controller = (function (budgetCtrl, UICtrl) {
 
             // Returning an object.
         }
-
     };
+
+    function ctrlDeleteItem(event) {
+        var parent = event.target;
+        // DOM traversal to item container.
+        for (var i = 0; i < 4; i++) { parent = parent.parentNode; }
+
+        var itemID = parent.id;
+        if (itemID) {
+            itemID = itemID.split('-');
+            var type = itemID[0];
+            var id = itemID[1];
+            console.log(`type = ${type} and ID = ${id}`);
+            // remove id from data store.
+            // update budget.
+            // remove id from UI.
+        }
+    }
 
 
     return {
