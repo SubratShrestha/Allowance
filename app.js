@@ -132,6 +132,21 @@ var UIController = (function () {
         expPercLabel: '.item__percentage'
     };
 
+    function formatNumber(num, type) {
+        num = Math.abs(num);
+        num = num.toFixed(2);
+
+        var numSplit = num.split('.');
+        var int = numSplit[0];
+        var dec = numSplit[1];
+
+        if (int.length > 3) {
+            int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
+        }
+
+        return (type === 'inc' ? '+ ' : '- ') + int + '.' + dec;
+    };
+
     // Returning an object.
     return {
         // All variables and methods that we want accessible later.
@@ -152,7 +167,7 @@ var UIController = (function () {
                 html = `<div class="item clearfix" id="inc-${obj.id}">
                             <div class="item__description">${obj.description}</div>
                             <div class="right clearfix">
-                                <div class="item__value">${obj.value}</div>
+                                <div class="item__value">${formatNumber(obj.value, type)}</div>
                                 <div class="item__delete">
                                     <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                                 </div>
@@ -163,7 +178,7 @@ var UIController = (function () {
                 html = ` <div class="item clearfix" id="exp-${obj.id}">
                             <div class="item__description">${obj.description}</div>
                             <div class="right clearfix">
-                                <div class="item__value">${obj.value}</div>
+                                <div class="item__value">${formatNumber(obj.value, type)}</div>
                                 <div class="item__percentage">10%</div>
                                 <div class="item__delete">
                                     <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
@@ -186,9 +201,10 @@ var UIController = (function () {
         },
 
         updateUI: function (budgetObj) {
-            document.querySelector(DOM.budgetLabel).textContent = '$' + budgetObj.budget;
-            document.querySelector(DOM.incomeLabel).textContent = '+ ' + budgetObj.totalInc;
-            document.querySelector(DOM.expenseLabel).textContent = '- ' + budgetObj.totalExp;
+            var type = budgetObj.budget > 0 ? 'inc' : 'exp';
+            document.querySelector(DOM.budgetLabel).textContent = formatNumber(budgetObj.budget, type);
+            document.querySelector(DOM.incomeLabel).textContent = formatNumber(budgetObj.totalInc, 'inc');
+            document.querySelector(DOM.expenseLabel).textContent = formatNumber(budgetObj.totalExp, 'exp');
 
             if (budgetObj.percentage > 0)
                 document.querySelector(DOM.percentageLabel).textContent = budgetObj.percentage + '%';
@@ -198,7 +214,7 @@ var UIController = (function () {
         updatePercUI: function (percArray) {
             percLabels = document.querySelectorAll(DOM.expPercLabel);
             for (var i = 0; i < percLabels.length; i++) {
-                if (percArray[i] > 0 && percArray[i] <= 100)
+                if (percArray[i] > 0)
                     percLabels[i].textContent = percArray[i] + '%';
                 else percLabels[i].textContent = '...';
             };
