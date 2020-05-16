@@ -141,9 +141,7 @@ var UIController = (function () {
         var int = numSplit[0];
         var dec = numSplit[1];
 
-        if (int.length > 3) {
-            int = int.substr(0, int.length - 3) + ',' + int.substr(int.length - 3, 3);
-        }
+        int = Number(int).toLocaleString();
 
         return (type === 'inc' ? '+ ' : '- ') + int + '.' + dec;
     };
@@ -313,8 +311,6 @@ var controller = (function (budgetCtrl, UICtrl) {
 
             // calculate and update percentages.
             updatePercentage();
-
-            // Returning an object.
         }
     };
 
