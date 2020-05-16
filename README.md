@@ -5,6 +5,7 @@ for a month.
 
 ## Technologies.
 The app uses JavaScript for calculations and DOM manipulation.
+
 It provides a simple and beautiful UI written in basic HTML and CSS.
 
 ## Use.
