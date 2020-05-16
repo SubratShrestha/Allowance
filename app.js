@@ -14,12 +14,12 @@ var budgetController = (function () {
         this.perc = -1;
     };
 
-    Expense.prototype.calculatePercentage = function (total) {
+    Expense.prototype.calcPerc = function (total) {
         if (total > 0)
             this.perc = Math.round((this.value / total) * 100);
     };
 
-    Expense.prototype.getPercentage = function () {
+    Expense.prototype.getPerc = function () {
         return this.perc;
     };
 
@@ -79,13 +79,13 @@ var budgetController = (function () {
 
         calculatePercentage: function () {
             data.items.exp.forEach(function (curr) {
-                curr.calculatePercentage(data.totals.inc);
+                curr.calcPerc(data.totals.inc);
             })
         },
 
         getPercentage: function () {
             var percArray = data.items.exp.map(function (curr) {
-                return curr.getPercentage();
+                return curr.getPerc();
             });
             return percArray;
         },
@@ -128,7 +128,8 @@ var UIController = (function () {
         incomeLabel: '.budget__income--value',
         expenseLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
-        container: '.container'
+        container: '.container',
+        expPercLabel: '.item__percentage'
     };
 
     // Returning an object.
@@ -194,6 +195,15 @@ var UIController = (function () {
             else document.querySelector(DOM.percentageLabel).textContent = '...'
         },
 
+        updatePercUI: function (percArray) {
+            percLabels = document.querySelectorAll(DOM.expPercLabel);
+            for (var i = 0; i < percLabels.length; i++) {
+                if (percArray[i] > 0 && percArray[i] <= 100)
+                    percLabels[i].textContent = percArray[i] + '%';
+                else percLabels[i].textContent = '...';
+            };
+        },
+
         deleteItemUI: function (id) {
             var element = document.getElementById(id);
             element.parentNode.removeChild(element);
@@ -241,7 +251,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         var perc = budgetCtrl.getPercentage();
 
         // update UI with new percentage
-        console.log(perc);
+        UICtrl.updatePercUI(perc);
     };
 
     // Controls the adding of items to other modules.
