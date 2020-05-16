@@ -129,7 +129,8 @@ var UIController = (function () {
         expenseLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
         container: '.container',
-        expPercLabel: '.item__percentage'
+        expPercLabel: '.item__percentage',
+        month: '.budget__title--month'
     };
 
     function formatNumber(num, type) {
@@ -218,6 +219,12 @@ var UIController = (function () {
                     percLabels[i].textContent = percArray[i] + '%';
                 else percLabels[i].textContent = '...';
             };
+        },
+
+        displayMonth: function () {
+            var now = new Date();
+            var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            document.querySelector(DOM.month).textContent = monthNames[now.getUTCMonth()];
         },
 
         deleteItemUI: function (id) {
@@ -322,6 +329,7 @@ var controller = (function (budgetCtrl, UICtrl) {
         // All variables and methods that we want accessible later.
         init: function () {
             console.log('started.');
+            UICtrl.displayMonth();
             setupEventListeners();
         }
     }
